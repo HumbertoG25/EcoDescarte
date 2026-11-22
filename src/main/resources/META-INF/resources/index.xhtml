@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>EcoDescarte - Home</title>
+</h:head>
+<h:body>
+    <h1>EcoDescarte - Checklist antes do Descarte</h1>
+
+    <!-- Informações da sessão do usuário -->
+    <h:panelGroup rendered="#{not empty usuarioBean.usuarioLogado}">
+        <p>Olá, <strong>#{usuarioBean.usuarioLogado.nome}</strong>!</p>
+        <h:form>
+            <h:commandButton value="Sair (Logout)" action="#{usuarioBean.logout}" />
+        </h:form>
+        <hr/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{empty usuarioBean.usuarioLogado}">
+        <p>Você não está logado no momento.</p>
+        <h:button value="Ir para Login" outcome="login.xhtml" />
+        <hr/>
+    </h:panelGroup>
+
+    <!-- Seleção do tipo de lixo eletrônico -->
+    <h2>Selecione o tipo de lixo eletrônico:</h2>
+    <h:form>
+        <h:selectOneMenu value="#{descarteBean.equipamentoSelecionadoId}">
+            <f:selectItem itemLabel="-- Escolha um equipamento --" itemValue="#{null}" />
+            <f:selectItems value="#{descarteBean.equipamentosDisponiveis}"
+                           var="equip"
+                           itemLabel="#{equip.nome} (#{equip.categoria})"
+                           itemValue="#{equip.id}" />
+        </h:selectOneMenu>
+
+        <h:commandButton value="Carregar Checklist" action="#{descarteBean.carregarCheckList}" />
+    </h:form>
+
+    <br/>
+
+    <h:panelGroup id="painelResultado">
+
+        <!-- Checklist: só aparece enquanto não estiver 100% concluído -->
+        <h:panelGroup rendered="#{not empty descarteBean.equipamentoSelecionado and not empty descarteBean.passosCheckList and not descarteBean.checklistConcluido}">
+            <h:panelGroup rendered="#{descarteBean.equipamentoSelecionado.reqLimpDados}">
+                <p><strong>Atenção:</strong> Este equipamento exige limpeza ou remoção de dados pessoais antes do descarte.</p>
+            </h:panelGroup>
+
+            <h3>Passos antes do descarte (marque todos para liberar os pontos de coleta):</h3>
+            <h:form>
+                <ol>
+                    <ui:repeat value="#{descarteBean.passosCheckList}" var="passo">
+                        <li>
+                            <h:selectBooleanCheckbox value="#{passo.concluido}">
+                                <f:ajax listener="#{descarteBean.verificarChecklist}" execute="@form" render=":painelResultado" />
+                            </h:selectBooleanCheckbox>
+                            <strong>Passo #{passo.ordem}:</strong> #{passo.instrucao}
+                        </li>
+                    </ui:repeat>
+                </ol>
+            </h:form>
+        </h:panelGroup>
+
+        <!-- Mensagem caso o equipamento não tenha passos cadastrados ainda -->
+        <h:panelGroup rendered="#{not empty descarteBean.equipamentoSelecionado and empty descarteBean.passosCheckList}">
+            <p>Nenhum passo de checklist cadastrado para este equipamento ainda.</p>
+        </h:panelGroup>
+
+        <!-- Pontos de Coleta Disponíveis: só aparece quando descarteBean.checklistConcluido for true -->
+        <h:panelGroup rendered="#{descarteBean.checklistConcluido}">
+            <hr/>
+            <p style="color: green;"><strong>✔ Todos os passos do checklist foram concluídos!</strong></p>
+            <h2>Pontos de Coleta Disponíveis:</h2>
+
+            <h:panelGroup rendered="#{not empty descarteBean.pontosDeColeta}">
+                <table border="1" cellpadding="8" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Local</th>
+                            <th>Endereço</th>
+                            <th>Bairro</th>
+                            <th>Cidade</th>
+                            <th>Horário de Atendimento</th>
+                            <th>Rota</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{descarteBean.pontosDeColeta}" var="ponto">
+                            <tr>
+                                <td><strong>#{ponto.nomeLocal}</strong></td>
+                                <td>#{ponto.endereco}</td>
+                                <td>#{ponto.bairro}</td>
+                                <td>#{ponto.cidade}</td>
+                                <td>#{ponto.horarioAtendimento}</td>
+                                <td>
+                                    <h:outputLink value="#{descarteBean.gerarLinkMaps(ponto)}" target="_blank">
+                                        Traçar Rota no Google Maps
+                                    </h:outputLink>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{empty descarteBean.pontosDeColeta}">
+                <p>Nenhum ponto de coleta ativo encontrado para o equipamento selecionado.</p>
+            </h:panelGroup>
+        </h:panelGroup>
+
+    </h:panelGroup>
+
+</h:body>
+</html>
