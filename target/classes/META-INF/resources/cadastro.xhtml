@@ -3,34 +3,88 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EcoDescarte - Cadastro</title>
+    <h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <h:body>
-    <h2>Cadastro de Novo Usuário</h2>
-    
-    <!-- Exibe mensagens de erro ou sucesso -->
-    <h:messages globalOnly="false" showSummary="true" showDetail="true" style="color:red;" />
-    
-    <h:form>
-        <h:panelGrid columns="2">
-            <h:outputLabel for="nome" value="Nome Completo:" />
-            <h:inputText id="nome" value="#{usuarioBean.usuario.nome}" required="true" />
+    <div class="auth-split">
+        <!-- Lado Esquerdo: Identidade EcoDescarte -->
+        <section class="auth-hero">
+            <div class="auth-hero-top">
+                <h:link outcome="/index.xhtml" styleClass="auth-brand">
+                    <span class="auth-brand-icon">&#9851;</span>
+                    <span class="auth-brand-text">
+                        <strong>EcoDescarte</strong>
+                        <span>Descarte Consciente de Lixo Eletrônico</span>
+                    </span>
+                </h:link>
+            </div>
 
-            <h:outputLabel for="email" value="E-mail:" />
-            <h:inputText id="email" value="#{usuarioBean.usuario.email}" required="true" />
+            <div class="auth-hero-mid">
+                <div class="auth-pill">Faça Parte da Mudança</div>
+                <h1 class="auth-hero-title">
+                    Comece hoje a descartar com <strong>consciência.</strong>
+                </h1>
+                <p class="auth-hero-desc">
+                    Crie sua conta gratuita para acessar os checklists de segurança e localizar
+                    os ecopontos que recebem seus equipamentos eletrônicos.
+                </p>
+            </div>
 
-            <h:outputLabel for="senha" value="Senha:" />
-            <h:inputSecret id="senha" value="#{usuarioBean.usuario.senha}" required="true" />
+            <div class="auth-hero-bottom">
+                <span>EcoDescarte &#8226; ODS 12 &amp; 13</span>
+                <span>Consumo e Produção Responsáveis</span>
+            </div>
+        </section>
 
-            <h:outputLabel for="cidade" value="Cidade:" />
-            <h:inputText id="cidade" value="#{usuarioBean.usuario.cidade}" />
-        </h:panelGrid>
+        <!-- Lado Direito: Formulário de Cadastro -->
+        <section class="auth-panel">
+            <div class="auth-top-link">
+                <h:link value="&#8592; Voltar ao Login" outcome="/login.xhtml" styleClass="btn-secundario btn-sm" />
+            </div>
 
-        <br/>
-        <h:commandButton value="Cadastrar" action="#{usuarioBean.cadastrar}" />
-        
-        <br/><br/>
-        <h:link value="Já tem uma conta? Faça login" outcome="login.xhtml" />
-    </h:form>
+            <div class="auth-box">
+                <h2>Criar conta</h2>
+                <p class="auth-sub">Preencha seus dados para se cadastrar no EcoDescarte.</p>
+
+                <h:messages globalOnly="false" showSummary="true" showDetail="true"
+                            styleClass="mensagens" infoClass="msg-sucesso" errorClass="msg-erro" />
+
+                <h:form>
+                    <div class="form-campo">
+                        <h:outputLabel for="nome" value="Nome Completo" />
+                        <h:inputText id="nome" value="#{usuarioBean.usuario.nome}" required="true"
+                                     requiredMessage="Informe seu nome completo." styleClass="input-texto" />
+                    </div>
+
+                    <div class="form-campo">
+                        <h:outputLabel for="email" value="E-mail" />
+                        <h:inputText id="email" value="#{usuarioBean.usuario.email}" required="true"
+                                     requiredMessage="Informe seu e-mail." styleClass="input-texto" />
+                    </div>
+
+                    <div class="form-campo">
+                        <h:outputLabel for="senha" value="Senha" />
+                        <h:inputSecret id="senha" value="#{usuarioBean.usuario.senha}" required="true"
+                                       requiredMessage="Informe uma senha." styleClass="input-texto" />
+                    </div>
+
+                    <div class="form-campo">
+                        <h:outputLabel for="cidade" value="Cidade" />
+                        <h:inputText id="cidade" value="#{usuarioBean.usuario.cidade}" styleClass="input-texto" />
+                    </div>
+
+                    <h:commandButton value="Criar Minha Conta" action="#{usuarioBean.cadastrar}" styleClass="btn-primario btn-full" />
+                </h:form>
+
+                <div class="auth-footer">
+                    Já tem uma conta?
+                    <h:link value="Faça login" outcome="/login.xhtml" />
+                </div>
+            </div>
+        </section>
+    </div>
 </h:body>
 </html>

@@ -5,6 +5,8 @@ import com.ProjetoIntegrador.EcoDescarte.Repositorios.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service 
@@ -24,5 +26,23 @@ public class CadastroService {
         }
 
         usuarioRepository.Insert(usuario);
+    }
+
+    public void cadastrarAdmim(Usuario usuario){
+        Optional<Usuario> existente = usuarioRepository.buscarEmail(usuario.getEmail());
+        if(existente.isPresent()){
+            throw new RuntimeException("Esse Email ja esta sendo usado!");
+        }
+        usuario.setRole("ROLE_ADMIN");
+
+        usuarioRepository.Insert(usuario);
+    }
+
+    public void deletarUsuario(Long id){
+        usuarioRepository.deletar(id);
+    }
+
+    public List<Usuario> listarUsuario(){
+        return usuarioRepository.listar();
     }
 }

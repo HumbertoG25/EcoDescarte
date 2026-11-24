@@ -25,4 +25,23 @@ public class EquipamentoRepository {
             return eq;
         });
     }
+
+    public Long inserir(Equipamento equipamento) {
+        String sql = """
+                INSERT INTO equipamentos (nome, categoria, icone, req_limp_dados)
+                VALUES (?, ?, ?, ?)
+                RETURNING id
+                """;
+        return jdbcTemplate.queryForObject(sql, Long.class,
+            equipamento.getNome(),
+            equipamento.getCategoria(),
+            equipamento.getIcone(),
+            equipamento.isReqLimpDados()
+        );
+    }
+
+    public void deletar(Long id) {
+        String sql = "DELETE FROM equipamentos WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }

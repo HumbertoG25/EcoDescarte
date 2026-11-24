@@ -44,4 +44,27 @@ public class CheckListRepository {
             return item;
         });
     }
+
+    public Long inserir(Long equipamentoId, CheckList passo) {
+        String sql = """
+                INSERT INTO checklists (equipamento_id, instrucao, ordem)
+                VALUES (?, ?, ?)
+                RETURNING id
+                """;
+        return jdbcTemplate.queryForObject(sql, Long.class,
+            equipamentoId,
+            passo.getInstrucao(),
+            passo.getOrdem()
+        );
+    }
+
+    public void deletar(Long id) {
+        String sql = "DELETE FROM checklists WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public void deletarPorEquipID(Long equipamentoId) {
+        String sql = "DELETE FROM checklists WHERE equipamento_id = ?";
+        jdbcTemplate.update(sql, equipamentoId);
+    }
 }

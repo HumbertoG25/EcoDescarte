@@ -1,5 +1,6 @@
 package com.ProjetoIntegrador.EcoDescarte.Repositorios;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,31 @@ public class UsuarioRepository {
         }, email).stream().findFirst();
     }
 
+    public List<Usuario> listar(){
+        String sql = """
+                    SELECT id, nome, email, senha_hash, cidade, role, data_cadastro
+                    FROM usuarios
+                    ORDER BY nome ASC
+                    """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Usuario usuario = new Usuario();
+            usuario.setId(rs.getLong("id"));
+            usuario.setNome(rs.getString("nome"));
+            usuario.setEmail(rs.getString("email"));
+            usuario.setSenha(rs.getString("senha_hash"));
+            usuario.setCidade(rs.getString("cidade"));
+            usuario.setRole(rs.getString("role"));
+
+            var dataCadastro = rs.getTimestamp("data_cadastro");
+            if (dataCadastro != null) {
+                usuario.setDataCadastro(dataCadastro.toLocalDateTime());
+            }
+
+            return usuario;
+        });
+    }
+
     public void Insert(Usuario usuario){
         String sql = "INSERT INTO usuarios (nome, email, senha_hash, cidade, role, data_cadastro) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
@@ -49,5 +75,10 @@ public class UsuarioRepository {
             usuario.getRole(),
             java.sql.Timestamp.valueOf(usuario.getDataCadastro() != null ? usuario.getDataCadastro() : java.time.LocalDateTime.now())
         );
+    }
+
+    public void deletar(Long id){
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

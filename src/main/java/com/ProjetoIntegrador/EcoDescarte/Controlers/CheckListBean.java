@@ -1,5 +1,6 @@
 package com.ProjetoIntegrador.EcoDescarte.Controlers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.ProjetoIntegrador.EcoDescarte.models.Equipamento;
 import com.ProjetoIntegrador.EcoDescarte.models.PontoDeColeta;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 
 @Named("descarteBean")
@@ -33,8 +35,32 @@ public class CheckListBean {
 
     @PostConstruct
     public void init() {
-        this.equipamentosDisponiveis = checkListService.listarEquip();
+        recarregarEquipamentos();
         this.pontosDeColeta = pontoColetaService.listarPontosAtivos(null);
+    }
+
+    public void recarregarEquipamentos() {
+        this.equipamentosDisponiveis = checkListService.listarEquip();
+    }
+
+    public String selecionarEquipamento(Long id) {
+        this.equipamentoSelecionadoId = id;
+        carregarCheckList();
+        try {
+            var externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            externalContext.redirect(externalContext.getRequestContextPath() + "/index.xhtml#descarte");
+            return null;
+        } catch (IOException e) {
+            return "/index.xhtml?faces-redirect=true";
+        }
+    }
+
+    public String reiniciarDescarte() {
+        this.equipamentoSelecionadoId = null;
+        this.equipamentoSelecionado = null;
+        this.passosCheckList = null;
+        this.checklistConcluido = false;
+        return "/index.xhtml?faces-redirect=true";
     }
 
     public void carregarCheckList(){

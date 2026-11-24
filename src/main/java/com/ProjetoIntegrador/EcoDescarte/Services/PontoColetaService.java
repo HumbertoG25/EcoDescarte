@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ProjetoIntegrador.EcoDescarte.Repositorios.PontoColetaRepository;
 import com.ProjetoIntegrador.EcoDescarte.models.PontoDeColeta;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PontoColetaService {
@@ -41,5 +42,38 @@ public class PontoColetaService {
 
         String encoded = URLEncoder.encode(destino.toString(), StandardCharsets.UTF_8);
         return "https://www.google.com/maps/dir/?api=1&destination=" + encoded;
+    }
+
+    public List<PontoDeColeta> listarTodos() {
+        return pontoColetaRepository.listartodos();
+    }
+
+    @Transactional
+    public void cadastrarPonto(PontoDeColeta ponto, List<Long> equipamentosIds) {
+        if(ponto.getNomeLocal() == null || ponto.getNomeLocal().isBlank()) {
+            throw new IllegalArgumentException("O nome do local não pode ser nulo ou vazio.");
+        }
+        if(ponto.getEndereco() == null || ponto.getEndereco().isBlank()) {
+            throw new IllegalArgumentException("O endereço não pode ser nulo ou vazio.");
+        }
+        if(ponto.getCidade() == null || ponto.getCidade().isBlank()) {
+            throw new IllegalArgumentException("A cidade não pode ser nula ou vazia.");
+        }
+
+        Long pontoId = pontoColetaRepository.inserir(ponto);
+
+        if (equipamentosIds != null) {
+            for(Long eqId : equipamentosIds) {
+                pontoColetaRepository.vincularEquipamento(pontoId, eqId);
+            }
+        }
+    }
+
+    public void deletarPonto(Long id) {
+        pontoColetaRepository.deletar(id);
+    }
+
+    public List<PontoDeColeta> listarPontos() {
+        return pontoColetaRepository.listar();
     }
 }

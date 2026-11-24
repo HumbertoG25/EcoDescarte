@@ -1,0 +1,33 @@
+<ui:composition template="/admin/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="titulo">EcoDescarte - Central de Gerenciamento</ui:define>
+
+    <ui:define name="conteudo">
+        <div class="card">
+            <h2>Central de Gerenciamento</h2>
+            <p>Olá, <strong>#{usuarioBean.usuarioLogado.nome}</strong>! Utilize a barra lateral ou os atalhos abaixo para gerenciar o sistema EcoDescarte.</p>
+        </div>
+
+        <div class="card">
+            <h3>Atalhos Rápidos</h3>
+            <ul>
+                <li style="margin-bottom: 10px;">
+                    <h:link value="Gerenciar Usuários e Administradores" outcome="/admin/usuarios.xhtml" />
+                    — Cadastrar novos administradores e visualizar/remover usuários.
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <h:link value="Gerenciar Equipamentos e Checklists" outcome="/admin/equipamentos.xhtml" />
+                    — Adicionar tipos de lixo eletrônico com suas instruções de descarte.
+                </li>
+                <li>
+                    <h:link value="Gerenciar Pontos de Coleta" outcome="/admin/pontos.xhtml" />
+                    — Cadastrar ecopontos e vincular os equipamentos aceitos.
+                </li>
+            </ul>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,75 @@
+<ui:composition template="/admin/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="titulo">EcoDescarte - Usuários e Admins</ui:define>
+
+    <ui:define name="conteudo">
+        <div class="card">
+            <h2>Cadastrar Novo Administrador</h2>
+            <h:form>
+                <h:panelGrid columns="2" styleClass="form-grid">
+                    <h:outputLabel for="nome" value="Nome Completo:" />
+                    <h:inputText id="nome" value="#{adminUsuarioBean.novoAdmin.nome}" required="true"
+                                 requiredMessage="Informe o nome." styleClass="input-texto" />
+
+                    <h:outputLabel for="email" value="E-mail:" />
+                    <h:inputText id="email" value="#{adminUsuarioBean.novoAdmin.email}" required="true"
+                                 requiredMessage="Informe o e-mail." styleClass="input-texto" />
+
+                    <h:outputLabel for="senha" value="Senha:" />
+                    <h:inputSecret id="senha" value="#{adminUsuarioBean.novoAdmin.senha}" required="true"
+                                   requiredMessage="Informe a senha." styleClass="input-texto" />
+
+                    <h:outputLabel for="cidade" value="Cidade:" />
+                    <h:inputText id="cidade" value="#{adminUsuarioBean.novoAdmin.cidade}" styleClass="input-texto" />
+                </h:panelGrid>
+
+                <br/>
+                <h:commandButton value="Cadastrar Administrador" action="#{adminUsuarioBean.cadastrarAdmin}" styleClass="btn-primario" />
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h3>Usuários Cadastrados</h3>
+            <h:form>
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Cidade</th>
+                            <th>Perfil</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{adminUsuarioBean.usuarios}" var="u">
+                            <tr>
+                                <td>#{u.id}</td>
+                                <td><strong>#{u.nome}</strong></td>
+                                <td>#{u.email}</td>
+                                <td>#{u.cidade}</td>
+                                <td>#{u.role}</td>
+                                <td>
+                                    <h:panelGroup rendered="#{u.id == usuarioBean.usuarioLogado.id}">
+                                        <em>(Você)</em>
+                                    </h:panelGroup>
+                                    <h:commandButton value="Excluir"
+                                                     action="#{adminUsuarioBean.deletarUsuario(u.id)}"
+                                                     rendered="#{u.id != usuarioBean.usuarioLogado.id}"
+                                                     onclick="return confirm('Deseja realmente excluir este usuário?');"
+                                                     styleClass="btn-perigo" />
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

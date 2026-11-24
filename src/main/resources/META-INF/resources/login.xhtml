@@ -3,30 +3,73 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EcoDescarte - Login</title>
+    <h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <h:body>
-    <h2>Login - EcoDescarte</h2>
-    
-    <!-- Exibe mensagens de erro ou sucesso -->
-    <h:messages globalOnly="false" style="color:red;" />
-    
-    <h:form>
-        <h:panelGrid columns="2">
-            <h:outputLabel for="email" value="E-mail:" />
-            <h:inputText id="email" value="#{usuarioBean.usuario.email}" required="true" />
+    <div class="auth-split">
+        <!-- Lado Esquerdo: Identidade EcoDescarte -->
+        <section class="auth-hero">
+            <div class="auth-hero-top">
+                <h:link outcome="/index.xhtml" styleClass="auth-brand">
+                    <span class="auth-brand-icon">&#9851;</span>
+                    <span class="auth-brand-text">
+                        <strong>EcoDescarte</strong>
+                        <span>Descarte Consciente de Lixo Eletrônico</span>
+                    </span>
+                </h:link>
+            </div>
 
-            <h:outputLabel for="senha" value="Senha:" />
-            <h:inputSecret id="senha" value="#{usuarioBean.usuario.senha}" required="true" />
-        </h:panelGrid>
+            <div class="auth-hero-mid">
+                <div class="auth-pill">Sustentabilidade &amp; Tecnologia</div>
+                <h1 class="auth-hero-title">
+                    Dê o destino certo ao seu <strong>lixo eletrônico.</strong>
+                </h1>
+                <p class="auth-hero-desc">
+                    Siga o checklist de segurança, proteja seus dados pessoais e encontre o
+                    ponto de coleta mais próximo em um único lugar.
+                </p>
+            </div>
 
-        <br/>
-        <h:commandButton value="Entrar" action="#{usuarioBean.logar}" />
-    </h:form>
+            <div class="auth-hero-bottom">
+                <span>EcoDescarte &#8226; ODS 12 &amp; 13</span>
+                <span>Consumo e Produção Responsáveis</span>
+            </div>
+        </section>
 
-    <br/>
-    <!-- Botão que direciona para a tela de cadastro -->
-    <h:link value="Criar Nova Conta" outcome="cadastro" styleClass="btn" />
+        <!-- Lado Direito: Formulário de Login -->
+        <section class="auth-panel">
+            <div class="auth-box">
+                <h2>Bem-vindo</h2>
+                <p class="auth-sub">Use seu e-mail e senha para acessar o sistema.</p>
 
+                <h:messages globalOnly="false" showSummary="true" showDetail="true"
+                            styleClass="mensagens" infoClass="msg-sucesso" errorClass="msg-erro" />
+
+                <h:form>
+                    <div class="form-campo">
+                        <h:outputLabel for="email" value="E-mail" />
+                        <h:inputText id="email" value="#{usuarioBean.usuario.email}" required="true"
+                                     requiredMessage="Informe seu e-mail." styleClass="input-texto" />
+                    </div>
+
+                    <div class="form-campo">
+                        <h:outputLabel for="senha" value="Senha" />
+                        <h:inputSecret id="senha" value="#{usuarioBean.usuario.senha}" required="true"
+                                       requiredMessage="Informe sua senha." styleClass="input-texto" />
+                    </div>
+
+                    <h:commandButton value="Entrar no Sistema" action="#{usuarioBean.logar}" styleClass="btn-primario btn-full" />
+                </h:form>
+
+                <div class="auth-footer">
+                    Ainda não tem uma conta?
+                    <h:link value="Criar Nova Conta" outcome="/cadastro.xhtml" />
+                </div>
+            </div>
+        </section>
+    </div>
 </h:body>
 </html>
