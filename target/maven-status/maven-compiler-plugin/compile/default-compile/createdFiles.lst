@@ -1,0 +1,15 @@
+com\ProjetoIntegrador\EcoDescarte\EcoDescarteApplication.class
+com\ProjetoIntegrador\EcoDescarte\controlers\UsuarioBean.class
+com\ProjetoIntegrador\EcoDescarte\services\PontoColetaService.class
+com\ProjetoIntegrador\EcoDescarte\models\CheckList.class
+com\ProjetoIntegrador\EcoDescarte\repositorios\CheckListRepository.class
+com\ProjetoIntegrador\EcoDescarte\services\CadastroService.class
+com\ProjetoIntegrador\EcoDescarte\models\PontoDeColeta.class
+com\ProjetoIntegrador\EcoDescarte\repositorios\PontoColetaRepository.class
+com\ProjetoIntegrador\EcoDescarte\services\CheckListService.class
+com\ProjetoIntegrador\EcoDescarte\models\Usuario.class
+com\ProjetoIntegrador\EcoDescarte\controlers\CheckListBean.class
+com\ProjetoIntegrador\EcoDescarte\services\AutentificacaoService.class
+com\ProjetoIntegrador\EcoDescarte\repositorios\UsuarioRepository.class
+com\ProjetoIntegrador\EcoDescarte\repositorios\EquipamentoRepository.class
+com\ProjetoIntegrador\EcoDescarte\models\Equipamento.class
