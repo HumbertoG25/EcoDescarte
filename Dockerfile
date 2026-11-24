@@ -18,5 +18,6 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Limita uso de memória para rodar bem no plano gratuito do Render (512 MB)
-ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
+# Limites de memória otimizados para o plano gratuito do Render (512 MB RAM)
+# SerialGC + Xmx220m + Xss256k evita estourar 512Mi somando Heap + Metaspace + Threads
+ENTRYPOINT ["java", "-Xms64m", "-Xmx220m", "-XX:MaxMetaspaceSize=160m", "-XX:+UseSerialGC", "-Xss256k", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
