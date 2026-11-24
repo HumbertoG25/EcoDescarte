@@ -14,7 +14,10 @@ public class AutentificacaoService {
     private UsuarioRepository usuarioRepository;
 
     public Usuario autenticarSenha(String email, String senhaForm){
-        Optional<Usuario> optUsuario = usuarioRepository.buscarEmail(email);
+        if (email == null || senhaForm == null) {
+            return null;
+        }
+        Optional<Usuario> optUsuario = usuarioRepository.buscarEmail(email.trim());
 
         if(optUsuario.isPresent()){
             Usuario usuario = optUsuario.get();

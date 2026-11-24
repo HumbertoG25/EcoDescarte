@@ -93,10 +93,13 @@ public class PontoColetaRepository {
     public void vincularEquipamento(Long pontoColetaId, Long equipamentoId) {
         String sql = """
                 INSERT INTO ponto_coleta_equipamento (ponto_coleta_id, equipamento_id)
-                VALUES (?, ?)
-                ON CONFLICT (ponto_coleta_id, equipamento_id) DO NOTHING
+                SELECT ?, ?
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM ponto_coleta_equipamento
+                    WHERE ponto_coleta_id = ? AND equipamento_id = ?
+                )
                 """;
-        jdbcTemplate.update(sql, pontoColetaId, equipamentoId);
+        jdbcTemplate.update(sql, pontoColetaId, equipamentoId, pontoColetaId, equipamentoId);
     }
 
     public void desvincularEquipamento(Long pontoColetaId, Long equipamentoId) {
